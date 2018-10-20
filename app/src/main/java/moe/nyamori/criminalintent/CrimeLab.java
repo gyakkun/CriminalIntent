@@ -18,8 +18,8 @@ public class CrimeLab {
         return sCrimeLab;
     }
 
-    private CrimeLab(Context contex){
-        mCrimes = new ArrayList<Crime>();
+    private CrimeLab(Context context){
+        mCrimes = new ArrayList<>();
 
         //For test only
 
