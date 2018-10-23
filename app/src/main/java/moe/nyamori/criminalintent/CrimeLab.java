@@ -1,61 +1,93 @@
 package moe.nyamori.criminalintent;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabaseCorruptException;
+import android.view.ContextThemeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import database.CrimeDbSchema.CrimeBaseHelper;
+import database.CrimeDbSchema.CrimeDbSchema;
+import database.CrimeDbSchema.CrimeDbSchema.CrimeTable;
 
 public class CrimeLab {
-    private  static  CrimeLab sCrimeLab;
+    private static CrimeLab sCrimeLab;
 
-    private List<Crime> mCrimes;
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
-    public static CrimeLab get(Context context){
-        if(sCrimeLab==null) {
+    public static CrimeLab get(Context context) {
+        if (sCrimeLab == null) {
             sCrimeLab = new CrimeLab(context);
         }
         return sCrimeLab;
     }
 
-    private CrimeLab(Context context){
+    private CrimeLab(Context context) {
         mContext = context.getApplicationContext();
         mDatabase = new CrimeBaseHelper(mContext)
                 .getWritableDatabase();
 
-        mCrimes = new ArrayList<>();
 
         //For test only
 
-        for(int ctr=0; ctr <2 ; ctr++){
+        for (int ctr = 0; ctr < 2; ctr++) {
             Crime crime = new Crime();
             crime.setTitle("Test Crime #" + ctr);
-            crime.setSolved(ctr%2==0);
-            mCrimes.add(crime);
+            crime.setSolved(ctr % 2 == 0);
         }
 
     }
 
     public List<Crime> getCrimes() {
-        return mCrimes;
+        return new ArrayList<>();
     }
 
-    public Crime getCrime(UUID id){
-        for(Crime crime:mCrimes){
-            if(crime.getId().equals(id)){
-                return crime;
-            }
-        }
+    public Crime getCrime(UUID id) {
         return null;
     }
 
-    public void addCrime(Crime c){
-        mCrimes.add(c);
+    public void addCrime(Crime c) {
+        ContentValues values = getContentValues(c);
+        mDatabase.insert(CrimeTable.NAME, null, values);
+    }
+
+    public void updateCrime(Crime crime) {
+        String uuidString = crime.getId().toString();
+        ContentValues values = getContentValues(crime);
+
+        mDatabase.update(CrimeTable.NAME, values,
+                CrimeTable.Cols.UUID + " = ?",
+                new String[]{uuidString});
+    }
+
+    private Cursor queryCrimes(String whereClause, String[] whereArgs){
+        Cursor cursor = mDatabase.query(
+                CrimeTable.NAME,
+                null, // Select al the columns
+                whereClause,
+                whereArgs,
+                null, //groupBy
+                null, //having
+                null //orderBy
+                );
+
+        return cursor;
+
+    }
+
+    private static ContentValues getContentValues(Crime crime) {
+        ContentValues values = new ContentValues();
+        values.put(CrimeTable.Cols.UUID, crime.getId().toString());
+        values.put(CrimeTable.Cols.TITLE, crime.getTitle());
+        values.put(CrimeTable.Cols.DATE, crime.getDate().getTime());
+        values.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
+
+        return values;
     }
 }
