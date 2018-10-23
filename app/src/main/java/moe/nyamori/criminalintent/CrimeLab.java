@@ -23,9 +23,9 @@ public class CrimeLab {
 
         //For test only
 
-        for(int ctr=0; ctr <100 ; ctr++){
+        for(int ctr=0; ctr <2 ; ctr++){
             Crime crime = new Crime();
-            crime.setTitle("Crime #" + ctr);
+            crime.setTitle("Test Crime #" + ctr);
             crime.setSolved(ctr%2==0);
             mCrimes.add(crime);
         }
@@ -43,5 +43,9 @@ public class CrimeLab {
             }
         }
         return null;
+    }
+
+    public void addCrime(Crime c){
+        mCrimes.add(c);
     }
 }
