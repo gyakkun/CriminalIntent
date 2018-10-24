@@ -142,6 +142,7 @@ public class CrimeFragment extends Fragment {
             mSuspectButton.setText(mCrime.getSuspect());
         }
 
+        //Check if system has a responsible app to contact activity
         PackageManager packageManager = getActivity().getPackageManager();
         if (packageManager.resolveActivity(pickContact,
                 packageManager.MATCH_DEFAULT_ONLY) == null) {
