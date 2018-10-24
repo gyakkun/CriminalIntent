@@ -123,7 +123,10 @@ public class CrimeLab {
         return values;
     }
 
-    public void deleteCrime(Crime crime){
-        mCrimes.remove(crime);
+    public void deleteCrime(Crime crime) {
+        mDatabase.delete(CrimeTable.NAME,
+                CrimeTable.Cols.UUID + " = ? ",
+                new String[]{crime.getId().toString()});
+        ;
     }
 }
