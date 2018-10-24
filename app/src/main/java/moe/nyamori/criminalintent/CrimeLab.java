@@ -60,6 +60,9 @@ public class CrimeLab {
             cursor.close();
         }
 
+
+        //now it returns a snapshot of the whole database
+        //rather than a reference of mCrimes before
         return crimes;
     }
 

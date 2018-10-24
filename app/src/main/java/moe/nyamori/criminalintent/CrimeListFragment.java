@@ -121,6 +121,7 @@ public class CrimeListFragment extends Fragment {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
+            mAdapter.setCrimes(crimes);
             mAdapter.notifyDataSetChanged();
         }
 
@@ -191,6 +192,12 @@ public class CrimeListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mCrimes.size();
+        }
+
+        //Set the mCrimes received from database query (null, null)
+        //it's a snapshot of the whole database
+        public void setCrimes(List<Crime> crimes){
+            mCrimes = crimes;
         }
     }
 
