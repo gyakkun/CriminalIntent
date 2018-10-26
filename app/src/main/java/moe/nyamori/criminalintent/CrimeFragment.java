@@ -40,6 +40,7 @@ public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String DIALOG_PHOTO = "DialogPhoto";
 
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
@@ -197,6 +198,19 @@ public class CrimeFragment extends Fragment {
         });
 
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mPhotoFile == null || !mPhotoFile.exists()) {
+                    return;
+                } else {
+                    FragmentManager manager = getFragmentManager();
+                    PhotoDetailDialog dialog = PhotoDetailDialog.newInstance(mPhotoFile);
+                    dialog.setTargetFragment(CrimeFragment.this, REQUEST_PHOTO);
+                    dialog.show(manager, DIALOG_PHOTO);
+                }
+            }
+        });
         updatePhotoView();
 
         return v;
@@ -235,7 +249,7 @@ public class CrimeFragment extends Fragment {
             } finally {
                 c.close();
             }
-        } else if(requestCode == REQUEST_PHOTO){
+        } else if (requestCode == REQUEST_PHOTO) {
             Uri uri = FileProvider.getUriForFile(getActivity(),
                     "moe.nyamori.criminalintent.fileprovider",
                     mPhotoFile);
