@@ -1,7 +1,10 @@
 package moe.nyamori.criminalintent;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.support.v4.app.NotificationCompatBase;
 
 public class PictureUtils{
 
@@ -26,6 +29,14 @@ public class PictureUtils{
         options.inSampleSize = inSampleSize;
 
         return BitmapFactory.decodeFile(path, options);
+    }
+
+    public static Bitmap getScaledBitmap(String path, Activity activity){
+        Point size = new Point();
+        activity.getWindowManager().getDefaultDisplay()
+                .getSize(size);
+
+        return getScaledBitmap(path, size.x, size.y);
     }
 
 }
