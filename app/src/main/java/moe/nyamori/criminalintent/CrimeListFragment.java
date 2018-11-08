@@ -1,6 +1,7 @@
 package moe.nyamori.criminalintent;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,11 +20,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +36,7 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private boolean mSubtitleVisible;
+    private EditText mEditText;
 
     private String LOG_TAG = "CrimeListFragment";
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
@@ -52,6 +60,8 @@ public class CrimeListFragment extends Fragment {
                 .findViewById(R.id.crime_recycler_view);
 
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mEditText = (EditText) view.findViewById(R.id.crime_edit_text);
 
         if(savedInstanceState!=null){
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
@@ -103,6 +113,7 @@ public class CrimeListFragment extends Fragment {
     private void updateSubtitle() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         int crimeCount = crimeLab.getCrimes().size();
+        @SuppressLint("StringFormatMatches")
         String subtitle = getString(R.string.subtitle_format, crimeCount);
 
         if(!mSubtitleVisible){
@@ -120,9 +131,47 @@ public class CrimeListFragment extends Fragment {
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
+            mEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    mAdapter.getFilter().filter(charSequence.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
         } else {
             mAdapter.setCrimes(crimes);
+
             mAdapter.notifyDataSetChanged();
+
+            mEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    mAdapter.getFilter().filter(charSequence.toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+
+            mAdapter.notifyDataSetChanged();
+
+
         }
 
         updateSubtitle();
@@ -166,12 +215,15 @@ public class CrimeListFragment extends Fragment {
         }
     }
 
-    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
+    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>
+    implements Filterable{
 
         private List<Crime> mCrimes;
+        private List<Crime> mFilteredCrimes;
 
         public CrimeAdapter(List<Crime> crimes) {
             mCrimes = crimes;
+            mFilteredCrimes = crimes;
         }
 
 
@@ -185,19 +237,52 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(CrimeHolder holder, int position) {
-            Crime crime = mCrimes.get(position);
+            Crime crime = mFilteredCrimes.get(position);
             holder.bind(crime);
         }
 
         @Override
         public int getItemCount() {
-            return mCrimes.size();
+            return mFilteredCrimes.size();
         }
 
         //Set the mCrimes received from database query (null, null)
         //it's a snapshot of the whole database
         public void setCrimes(List<Crime> crimes){
-            mCrimes = crimes;
+            mFilteredCrimes = crimes;
+        }
+
+        @Override
+        public Filter getFilter() {
+            return new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence charSequence) {
+                    String charString = charSequence.toString();
+                    if(charString.isEmpty()){
+                        mFilteredCrimes = mCrimes;
+                    } else {
+                        List<Crime> filteringCrimes = new ArrayList<>();
+                        for(Crime tmpCrime : mCrimes){
+                            if (tmpCrime.getTitle().contains(charString)) {
+                                filteringCrimes.add(tmpCrime);
+                            }
+                        }
+
+                        mFilteredCrimes = filteringCrimes;
+                    }
+
+                    FilterResults results = new FilterResults();
+                    results.values = mFilteredCrimes;
+                    return results;
+
+                }
+
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                    mFilteredCrimes = (ArrayList<Crime>) filterResults.values;
+                    notifyDataSetChanged();
+                }
+            };
         }
     }
 
