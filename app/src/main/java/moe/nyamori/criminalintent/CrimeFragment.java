@@ -169,7 +169,10 @@ public class CrimeFragment extends Fragment {
         }
 
         mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
-        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //final Intent selectImageFromGallery = new Intent(Intent.ACTION_PICK);
+        final Intent captureImage = new Intent(Intent.ACTION_PICK);
+        captureImage.setType("image/*");
 
         //Check if system has a camera app or other photo provider
         boolean canTakePhoto = mPhotoFile != null &&
@@ -179,19 +182,19 @@ public class CrimeFragment extends Fragment {
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = FileProvider.getUriForFile(getActivity(),
-                        "moe.nyamori.criminalintent.fileprovider",
-                        mPhotoFile);
-                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-
-                List<ResolveInfo> cameraActivities = getActivity()
-                        .getPackageManager().queryIntentActivities(captureImage,
-                                PackageManager.MATCH_DEFAULT_ONLY);
-
-                for (ResolveInfo activity : cameraActivities) {
-                    getActivity().grantUriPermission(activity.activityInfo.packageName,
-                            uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                }
+//                Uri uri = FileProvider.getUriForFile(getActivity(),
+//                        "moe.nyamori.criminalintent.fileprovider",
+//                        mPhotoFile);
+//                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//
+//                List<ResolveInfo> cameraActivities = getActivity()
+//                        .getPackageManager().queryIntentActivities(captureImage,
+//                                PackageManager.MATCH_DEFAULT_ONLY);
+//
+//                for (ResolveInfo activity : cameraActivities) {
+//                    getActivity().grantUriPermission(activity.activityInfo.packageName,
+//                            uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                }
 
                 startActivityForResult(captureImage, REQUEST_PHOTO);
             }
@@ -250,9 +253,10 @@ public class CrimeFragment extends Fragment {
                 c.close();
             }
         } else if (requestCode == REQUEST_PHOTO) {
-            Uri uri = FileProvider.getUriForFile(getActivity(),
-                    "moe.nyamori.criminalintent.fileprovider",
-                    mPhotoFile);
+            Uri uri = data.getData();
+//            Uri uri = FileProvider.getUriForFile(getActivity(),
+//                    "moe.nyamori.criminalintent.fileprovider",
+//                    mPhotoFile);
 
             getActivity().revokeUriPermission(uri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
