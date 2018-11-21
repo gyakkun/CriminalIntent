@@ -2,6 +2,7 @@ package moe.nyamori.criminalintent;
 
 import android.app.Activity;
 import android.app.usage.NetworkStats;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -9,7 +10,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -60,6 +60,7 @@ public class CrimeFragment extends Fragment {
     private Button mSuspectButton;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
+    private ContentResolver mResolver;
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -173,8 +174,10 @@ public class CrimeFragment extends Fragment {
         }
 
         mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
-//        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //final Intent selectImageFromGallery = new Intent(Intent.ACTION_PICK);
         final Intent captureImage = new Intent(Intent.ACTION_PICK);
+        captureImage.setType("image/*");
 
         //Check if system has a camera app or other photo provider
         boolean canTakePhoto = mPhotoFile != null &&
@@ -188,7 +191,7 @@ public class CrimeFragment extends Fragment {
                         "moe.nyamori.criminalintent.fileprovider",
                         mPhotoFile);
                 captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-
+//
 //                List<ResolveInfo> cameraActivities = getActivity()
 //                        .getPackageManager().queryIntentActivities(captureImage,
 //                                PackageManager.MATCH_DEFAULT_ONLY);
@@ -255,31 +258,31 @@ public class CrimeFragment extends Fragment {
                 c.close();
             }
         } else if (requestCode == REQUEST_PHOTO) {
-            Uri originalUri = data.getData();
-            //            Uri uri = FileProvider.getUriForFile(getActivity(),
+            Uri uri = data.getData();
+//            Uri uri = FileProvider.getUriForFile(getActivity(),
 //                    "moe.nyamori.criminalintent.fileprovider",
 //                    mPhotoFile);
 
-
             try {
                 // 使用ContentProvider通过URI获取原始图片
-                Bitmap photo = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), originalUri);
-                String imgName = mCrime.getPhotoFileName();
-                savePhotoToSDCard("/data/data/" + getContext().getPackageName()+"/", imgName, photo);
+                Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                String imgName = mPhotoFile.getName();
+                savePhotoToSDCard("/data/data/" + getContext().getPackageName() + "/", imgName, photo);
+                if (photo != null) {
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            getActivity().revokeUriPermission(originalUri,
+            getActivity().revokeUriPermission(uri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
             updatePhotoView();
         }
 
-
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -340,6 +343,7 @@ public class CrimeFragment extends Fragment {
         }
     }
 
+
     private void savePhotoToSDCard(String path, String photoName, Bitmap photoBitmap) {
         FileOutputStream fileOutputStream = null;
         File dir = new File(path);
@@ -369,8 +373,6 @@ public class CrimeFragment extends Fragment {
                 }
             }
         }
-
     }
-
-
 }
+
