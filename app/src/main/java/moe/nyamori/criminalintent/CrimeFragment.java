@@ -267,7 +267,7 @@ public class CrimeFragment extends Fragment {
                 // 使用ContentProvider通过URI获取原始图片
                 Bitmap photo = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                 String imgName = mPhotoFile.getName();
-                savePhotoToSDCard("/data/data/" + getContext().getPackageName() + "/", imgName, photo);
+                savePhotoToSDCard("/data/data/" + getContext().getPackageName() + "/files", imgName, photo);
                 if (photo != null) {
                 }
             } catch (FileNotFoundException e) {
