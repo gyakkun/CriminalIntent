@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilePermission;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -169,10 +173,8 @@ public class CrimeFragment extends Fragment {
         }
 
         mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
-        //final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //final Intent selectImageFromGallery = new Intent(Intent.ACTION_PICK);
+//        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         final Intent captureImage = new Intent(Intent.ACTION_PICK);
-        captureImage.setType("image/*");
 
         //Check if system has a camera app or other photo provider
         boolean canTakePhoto = mPhotoFile != null &&
@@ -182,11 +184,11 @@ public class CrimeFragment extends Fragment {
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Uri uri = FileProvider.getUriForFile(getActivity(),
-//                        "moe.nyamori.criminalintent.fileprovider",
-//                        mPhotoFile);
-//                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-//
+                Uri uri = FileProvider.getUriForFile(getActivity(),
+                        "moe.nyamori.criminalintent.fileprovider",
+                        mPhotoFile);
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
 //                List<ResolveInfo> cameraActivities = getActivity()
 //                        .getPackageManager().queryIntentActivities(captureImage,
 //                                PackageManager.MATCH_DEFAULT_ONLY);
@@ -253,16 +255,30 @@ public class CrimeFragment extends Fragment {
                 c.close();
             }
         } else if (requestCode == REQUEST_PHOTO) {
-            Uri uri = data.getData();
-//            Uri uri = FileProvider.getUriForFile(getActivity(),
+            Uri originalUri = data.getData();
+            //            Uri uri = FileProvider.getUriForFile(getActivity(),
 //                    "moe.nyamori.criminalintent.fileprovider",
 //                    mPhotoFile);
 
-            getActivity().revokeUriPermission(uri,
+
+            try {
+                // 使用ContentProvider通过URI获取原始图片
+                Bitmap photo = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), originalUri);
+                String imgName = mCrime.getPhotoFileName();
+                savePhotoToSDCard("/data/data/" + getContext().getPackageName()+"/", imgName, photo);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            getActivity().revokeUriPermission(originalUri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
             updatePhotoView();
         }
+
+
     }
 
     @Override
@@ -323,4 +339,38 @@ public class CrimeFragment extends Fragment {
             mPhotoView.setImageBitmap(bitmap);
         }
     }
+
+    private void savePhotoToSDCard(String path, String photoName, Bitmap photoBitmap) {
+        FileOutputStream fileOutputStream = null;
+        File dir = new File(path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File photoFile = new File(path, photoName);
+        try {
+            fileOutputStream = new FileOutputStream(photoFile);
+            if (photoBitmap != null) {
+                if (photoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)) {
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            photoFile.delete();
+            e.printStackTrace();
+        } catch (IOException e) {
+            photoFile.delete();
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+
 }
