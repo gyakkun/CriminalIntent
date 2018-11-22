@@ -189,8 +189,8 @@ public class HeroListFragment extends Fragment {
             itemView.setOnClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.hero_title);
-            mDateTextView = (TextView) itemView.findViewById(R.id.hero_date);
-            mImageView = (ImageView) itemView.findViewById(R.id.hero_solved);
+            mDateTextView = (TextView) itemView.findViewById(R.id.hero_profile);
+            mImageView = (ImageView) itemView.findViewById(R.id.hero_starred);
         }
 
         public void bind(Hero hero) {

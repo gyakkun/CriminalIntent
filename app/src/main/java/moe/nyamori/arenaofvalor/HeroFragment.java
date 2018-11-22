@@ -93,7 +93,7 @@ public class HeroFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_hero, container, false);
 
-        mDateButton = (Button) v.findViewById(R.id.hero_date);
+        mDateButton = (Button) v.findViewById(R.id.hero_profile);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +105,7 @@ public class HeroFragment extends Fragment {
             }
         });
 
-        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.hero_solved);
+        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.hero_starred);
         mSolvedCheckBox.setChecked(mHero.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -118,7 +118,7 @@ public class HeroFragment extends Fragment {
         mTitleField.setText(mHero.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
@@ -128,7 +128,7 @@ public class HeroFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable editable) {
 
             }
         });
