@@ -16,16 +16,26 @@ public class HeroCursorWrapper extends CursorWrapper {
 
     public Hero getHero() {
         String uuidString = getString(getColumnIndex(HeroTable.Cols.UUID));
-        String title = getString(getColumnIndex(HeroTable.Cols.TITLE));
-        long date = getLong(getColumnIndex(HeroTable.Cols.DATE));
-        int isSolved = getInt(getColumnIndex(HeroTable.Cols.SOLVED));
-        String suspect = getString(getColumnIndex(HeroTable.Cols.SUSPECT));
+        String name = getString(getColumnIndex(HeroTable.Cols.NAME));
+        String nickname = getString(getColumnIndex(HeroTable.Cols.NICKNAME));
+        String position = getString(getColumnIndex(HeroTable.Cols.POSITION));
+
+        int liveness = getInt(getColumnIndex(HeroTable.Cols.LIVENESS));
+        int attack = getInt(getColumnIndex(HeroTable.Cols.ATTACK));
+        int affection = getInt(getColumnIndex(HeroTable.Cols.AFFECTION));
+        int hardness = getInt(getColumnIndex(HeroTable.Cols.HARDNESS));
+
+        int isStarred = getInt(getColumnIndex(HeroTable.Cols.STARRED));
 
         Hero hero = new Hero(UUID.fromString(uuidString));
-        hero.setTitle(title);
-        hero.setDate(new Date(date));
-        hero.setSolved(isSolved != 0);
-        hero.setSuspect(suspect);
+        hero.setName(name);
+        hero.setNickname(nickname);
+        hero.setPosition(position);
+        hero.setLiveness(liveness);
+        hero.setAttack(attack);
+        hero.setAffection(affection);
+        hero.setHardness(hardness);
+        hero.setStarred(isStarred != 0);
 
         return hero;
     }

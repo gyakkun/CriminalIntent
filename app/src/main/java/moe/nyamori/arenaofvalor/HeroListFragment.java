@@ -197,9 +197,9 @@ public class HeroListFragment extends Fragment {
             mHero = hero;
             DateFormat dateFormat = DateFormat.getDateInstance();
             //Log.i(LOG_TAG, "Hero " + mHero.getId().toString() + " Bound.");
-            mTitleTextView.setText(mHero.getTitle());
-            mDateTextView.setText(dateFormat.format(hero.getDate()));
-            mImageView.setVisibility(mHero.isSolved() ? View.VISIBLE : View.GONE);
+            mTitleTextView.setText(mHero.getName());
+            mDateTextView.setText(mHero.getNickname());
+            mImageView.setVisibility(mHero.isStarred() ? View.VISIBLE : View.GONE);
         }
 
         @Override
@@ -258,7 +258,7 @@ public class HeroListFragment extends Fragment {
                     } else {
                         List<Hero> filteringHeros = new ArrayList<>();
                         for(Hero tmpHero : mHeros){
-                            if (tmpHero.getTitle().contains(charString)) {
+                            if (tmpHero.getName().contains(charString)) {
                                 filteringHeros.add(tmpHero);
                             }
                         }

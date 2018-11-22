@@ -106,11 +106,11 @@ public class HeroFragment extends Fragment {
         });
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.hero_starred);
-        mSolvedCheckBox.setChecked(mHero.isSolved());
+        mSolvedCheckBox.setChecked(mHero.isStarred());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                mHero.setSolved(isChecked);
+                mHero.setStarred(isChecked);
             }
         });
 
@@ -307,7 +307,7 @@ public class HeroFragment extends Fragment {
 
     private String getHeroReport() {
         String solvedString = null;
-        if (mHero.isSolved()) {
+        if (mHero.isStarred()) {
             solvedString = getString(R.string.hero_report_solved);
         } else {
             solvedString = getString(R.string.hero_report_unsolved);

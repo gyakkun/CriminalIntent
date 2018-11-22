@@ -38,7 +38,7 @@ public class HeroLab {
         for (int ctr = 0; ctr < 2; ctr++) {
             Hero Hero = new Hero();
             Hero.setTitle("Test Hero #" + ctr);
-            Hero.setSolved(ctr % 2 == 0);
+            Hero.setStarred(ctr % 2 == 0);
         }
 
     }
@@ -121,7 +121,7 @@ public class HeroLab {
         values.put(HeroTable.Cols.UUID, Hero.getId().toString());
         values.put(HeroTable.Cols.TITLE, Hero.getTitle());
         values.put(HeroTable.Cols.DATE, Hero.getDate().getTime());
-        values.put(HeroTable.Cols.SOLVED, Hero.isSolved() ? 1 : 0);
+        values.put(HeroTable.Cols.SOLVED, Hero.isStarred() ? 1 : 0);
         values.put(HeroTable.Cols.SUSPECT, Hero.getSuspect());
 
         return values;

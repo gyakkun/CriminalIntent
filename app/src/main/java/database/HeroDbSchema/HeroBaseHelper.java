@@ -21,10 +21,14 @@ public class HeroBaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + HeroTable.NAME + "(" +
                 " _id integer primary key autoincrement, " +
                 HeroTable.Cols.UUID + ", " +
-                HeroTable.Cols.TITLE + ", " +
-                HeroTable.Cols.DATE + ", " +
-                HeroTable.Cols.SOLVED + ", " +
-                HeroTable.Cols.SUSPECT +
+                HeroTable.Cols.NAME + ", " +
+                HeroTable.Cols.NICKNAME + ", " +
+                HeroTable.Cols.STARRED + ", " +
+                HeroTable.Cols.POSITION + ", " +
+                HeroTable.Cols.LIVENESS + ", " +
+                HeroTable.Cols.ATTACK + ", " +
+                HeroTable.Cols.AFFECTION + ", " +
+                HeroTable.Cols.HARDNESS +
                 ")"
         );
     }
