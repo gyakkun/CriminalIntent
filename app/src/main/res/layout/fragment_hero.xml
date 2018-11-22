@@ -98,19 +98,27 @@
             android:layout_height="wrap_content"
             android:text="@string/hero_liveness_label" />
 
+        <!--A dummy textview to occupy the space.-->
         <TextView
-            android:id="@+id/hero_liveness_value"
-            android:layout_marginLeft="240dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hero_liveness_value_dummy"/>
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/hero_liveness_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="@string/hero_liveness_value_dummy" />
 
     </LinearLayout>
 
     <SeekBar
         android:id="@+id/hero_liveness"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,19 +131,27 @@
             android:layout_height="wrap_content"
             android:text="@string/hero_attack_label" />
 
+        <!--A dummy textview to occupy the space.-->
         <TextView
-            android:id="@+id/hero_attack_value"
-            android:layout_marginLeft="240dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hero_attack_value_dummy"/>
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/hero_attack_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="@string/hero_attack_value_dummy" />
 
     </LinearLayout>
 
     <SeekBar
         android:id="@+id/hero_attack"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -148,22 +164,29 @@
             android:layout_height="wrap_content"
             android:text="@string/hero_affection_label" />
 
+        <!--A dummy textview to occupy the space.-->
         <TextView
-            android:id="@+id/hero_affection_value"
-            android:layout_marginLeft="240dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hero_affection_value_dummy"/>
+            android:layout_weight="1" />
+
+
+        <TextView
+            android:id="@+id/hero_affection_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="@string/hero_affection_value_dummy" />
 
     </LinearLayout>
-
 
 
     <SeekBar
         android:id="@+id/hero_affection"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0" />
 
 
     <Button

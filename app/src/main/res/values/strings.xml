@@ -22,11 +22,11 @@
     <string name="hero_report_suspect">the suspect is %s.</string>
     <string name="hero_report_subject">CriminalIntent Hero Report</string>
     <string name="send_report">Send hero report via</string>
-    <string name="hero_argv1_hint">Enter hero arv1</string>
-    <string name="hero_argv2_hint">Enter hero arv2</string>
+    <string name="hero_argv1_hint">Enter hero\'s nickname</string>
+    <string name="hero_argv2_hint">Enter hero\'s position</string>
     <string name="hero_argv3_hint">Enter hero arv3</string>
-    <string name="hero_argv1_label">Argv1</string>
-    <string name="hero_argv2_label">Argv2</string>
+    <string name="hero_argv1_label">Nickname</string>
+    <string name="hero_argv2_label">Position</string>
     <string name="hero_argv3_label">Argv3</string>
     <string name="hero_liveness_label">Liveness</string>
     <string name="hero_liveness_value_dummy">100</string>

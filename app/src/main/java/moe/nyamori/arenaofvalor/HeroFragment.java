@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,13 +50,20 @@ public class HeroFragment extends Fragment {
 
     private Hero mHero;
     private File mPhotoFile;
+
     private EditText mNameField;
     private EditText mNicknameField;
     private EditText mPositionField;
+
     private CheckBox mStarCheckbox;
     private Button mReportButton;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
+
+    private TextView mLivenessValue;
+    private TextView mAttackValue;
+    private TextView mAffectionValue;
+    private TextView mHardnessValue;
 
     private SeekBar mLivenessSeekbar;
     private SeekBar mAttackSeekbar;
@@ -125,6 +133,114 @@ public class HeroFragment extends Fragment {
             }
         });
 
+        mNicknameField = (EditText) v.findViewById(R.id.hero_argv1);
+        mNicknameField.setText(mHero.getNickname());
+        mNicknameField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int after) {
+                mHero.setNickname(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mPositionField = (EditText) v.findViewById(R.id.hero_argv2);
+        mPositionField.setText(mHero.getPosition());
+        mPositionField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int after) {
+                mHero.setPosition(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+        // Start Seekbar and Value Textview part
+        mAffectionValue = (TextView) v.findViewById(R.id.hero_affection_value);
+        mAffectionValue.setText(String.valueOf(mHero.getAffection()));
+        mAffectionSeekbar = (SeekBar) v.findViewById(R.id.hero_affection);
+        mAffectionSeekbar.setProgress(mHero.getAffection());
+        mAffectionSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
+                mAffectionValue.setText(String.valueOf(value));
+                mHero.setAffection(value);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+        mLivenessValue = (TextView) v.findViewById(R.id.hero_liveness_value);
+        mLivenessValue.setText(String.valueOf(mHero.getLiveness()));
+        mLivenessSeekbar = (SeekBar) v.findViewById(R.id.hero_liveness);
+        mLivenessSeekbar.setProgress(mHero.getLiveness());
+        mLivenessSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
+                mLivenessValue.setText(String.valueOf(value));
+                mHero.setLiveness(value);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        mAttackValue = (TextView) v.findViewById(R.id.hero_attack_value);
+        mAttackValue.setText(String.valueOf(mHero.getAttack()));
+        mAttackSeekbar = (SeekBar) v.findViewById(R.id.hero_attack);
+        mAttackSeekbar.setProgress(mHero.getAttack());
+        mAttackSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int value, boolean b) {
+                mAttackValue.setText(String.valueOf(value));
+                mHero.setAttack(value);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
         mReportButton = (Button) v.findViewById(R.id.hero_report);
         mReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,8 +263,6 @@ public class HeroFragment extends Fragment {
         //Check if system has a responsible app to contact activity
 
         mPhotoButton = (ImageButton) v.findViewById(R.id.hero_camera);
-        //final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //final Intent selectImageFromGallery = new Intent(Intent.ACTION_PICK);
         final Intent captureImage = new Intent(Intent.ACTION_PICK);
         captureImage.setType("image/*");
 
@@ -165,15 +279,6 @@ public class HeroFragment extends Fragment {
                         "moe.nyamori.arenaofvalor.fileprovider",
                         mPhotoFile);
                 captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-//
-//                List<ResolveInfo> cameraActivities = getActivity()
-//                        .getPackageManager().queryIntentActivities(captureImage,
-//                                PackageManager.MATCH_DEFAULT_ONLY);
-//
-//                for (ResolveInfo activity : cameraActivities) {
-//                    getActivity().grantUriPermission(activity.activityInfo.packageName,
-//                            uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//                }
 
                 startActivityForResult(captureImage, REQUEST_PHOTO);
             }
@@ -225,9 +330,6 @@ public class HeroFragment extends Fragment {
             }
         } else if (requestCode == REQUEST_PHOTO) {
             Uri uri = data.getData();
-//            Uri uri = FileProvider.getUriForFile(getActivity(),
-//                    "moe.nyamori.arenaofvalor.fileprovider",
-//                    mPhotoFile);
 
             try {
                 // 使用ContentProvider通过URI获取原始图片
@@ -254,8 +356,6 @@ public class HeroFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_hero, menu);
-
-//        MenuItem menuItem = menu.findItem(R.id.delete_hero);
     }
 
     @Override

@@ -35,11 +35,11 @@ public class HeroLab {
 
         //For test only
 
-        for (int ctr = 0; ctr < 2; ctr++) {
-            Hero Hero = new Hero();
-            Hero.setName("Test Hero #" + ctr);
-            Hero.setStarred(ctr % 2 == 0);
-        }
+//        for (int ctr = 0; ctr < 2; ctr++) {
+//            Hero Hero = new Hero();
+//            Hero.setName("Test Hero #" + ctr);
+//            Hero.setStarred(ctr % 2 == 0);
+//        }
 
     }
 

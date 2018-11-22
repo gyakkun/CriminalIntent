@@ -3,6 +3,7 @@ package moe.nyamori.arenaofvalor;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -58,7 +59,7 @@ public class HeroListFragment extends Fragment {
 
         mEditText = (EditText) view.findViewById(R.id.hero_edit_text);
 
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
         }
 
@@ -111,7 +112,7 @@ public class HeroListFragment extends Fragment {
         @SuppressLint("StringFormatMatches")
         String subtitle = getString(R.string.subtitle_format, heroCount);
 
-        if(!mSubtitleVisible){
+        if (!mSubtitleVisible) {
             subtitle = null;
         }
 
@@ -175,6 +176,7 @@ public class HeroListFragment extends Fragment {
     private class HeroHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
+        private ImageView mAvatarView;
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private ImageView mImageView;
@@ -188,6 +190,7 @@ public class HeroListFragment extends Fragment {
                     false));
             itemView.setOnClickListener(this);
 
+            mAvatarView = (ImageView) itemView.findViewById(R.id.hero_avatar);
             mTitleTextView = (TextView) itemView.findViewById(R.id.hero_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.hero_profile);
             mImageView = (ImageView) itemView.findViewById(R.id.hero_starred);
@@ -195,7 +198,10 @@ public class HeroListFragment extends Fragment {
 
         public void bind(Hero hero) {
             mHero = hero;
-            DateFormat dateFormat = DateFormat.getDateInstance();
+            String avatarPath = "/data/data/" + getContext().getPackageName() + "/files/" + mHero.getPhotoFileName();
+
+            Bitmap bitmap = PictureUtils.getScaledBitmap(avatarPath, 48,48);
+            mAvatarView.setImageBitmap(bitmap);
             //Log.i(LOG_TAG, "Hero " + mHero.getId().toString() + " Bound.");
             mTitleTextView.setText(mHero.getName());
             mDateTextView.setText(mHero.getNickname());
@@ -211,7 +217,7 @@ public class HeroListFragment extends Fragment {
     }
 
     private class HeroAdapter extends RecyclerView.Adapter<HeroHolder>
-    implements Filterable{
+            implements Filterable {
 
         private List<Hero> mHeros;
         private List<Hero> mFilteredHeros;
@@ -243,7 +249,7 @@ public class HeroListFragment extends Fragment {
 
         //Set the mHeros received from database query (null, null)
         //it's a snapshot of the whole database
-        public void setHeros(List<Hero> heros){
+        public void setHeros(List<Hero> heros) {
             mFilteredHeros = heros;
         }
 
@@ -253,11 +259,11 @@ public class HeroListFragment extends Fragment {
                 @Override
                 protected FilterResults performFiltering(CharSequence charSequence) {
                     String charString = charSequence.toString();
-                    if(charString.isEmpty()){
+                    if (charString.isEmpty()) {
                         mFilteredHeros = mHeros;
                     } else {
                         List<Hero> filteringHeros = new ArrayList<>();
-                        for(Hero tmpHero : mHeros){
+                        for (Hero tmpHero : mHeros) {
                             if (tmpHero.getName().contains(charString)) {
                                 filteringHeros.add(tmpHero);
                             }
