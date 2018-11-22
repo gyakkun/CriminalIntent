@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "moe.nyamori.criminalintent"
+        applicationId "moe.nyamori.arenaofvalor"
         minSdkVersion 25
         targetSdkVersion 26
         versionCode 1

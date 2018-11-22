@@ -1,30 +1,30 @@
-package database.CrimeDbSchema;
+package database.HeroDbSchema;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import database.CrimeDbSchema.CrimeDbSchema.CrimeTable;
+import database.HeroDbSchema.HeroDbSchema.HeroTable;
 
-public class CrimeBaseHelper extends SQLiteOpenHelper {
+public class HeroBaseHelper extends SQLiteOpenHelper {
 
     private static final int VERSION = 1;
     private static final String DATABASE_NAME = "crimeBase.db";
 
-    public CrimeBaseHelper(Context context) {
+    public HeroBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("create table " + CrimeTable.NAME + "(" +
+        db.execSQL("create table " + HeroTable.NAME + "(" +
                 " _id integer primary key autoincrement, " +
-                CrimeTable.Cols.UUID + ", " +
-                CrimeTable.Cols.TITLE + ", " +
-                CrimeTable.Cols.DATE + ", " +
-                CrimeTable.Cols.SOLVED + ", " +
-                CrimeTable.Cols.SUSPECT +
+                HeroTable.Cols.UUID + ", " +
+                HeroTable.Cols.TITLE + ", " +
+                HeroTable.Cols.DATE + ", " +
+                HeroTable.Cols.SOLVED + ", " +
+                HeroTable.Cols.SUSPECT +
                 ")"
         );
     }

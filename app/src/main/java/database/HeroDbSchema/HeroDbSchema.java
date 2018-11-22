@@ -1,8 +1,8 @@
-package database.CrimeDbSchema;
+package database.HeroDbSchema;
 
-public class CrimeDbSchema {
+public class HeroDbSchema {
 
-    public static final class CrimeTable {
+    public static final class HeroTable {
         public static final String NAME = "crimes";
 
         public static final class Cols {
