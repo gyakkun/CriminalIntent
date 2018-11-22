@@ -46,17 +46,17 @@ public class HeroListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_crime_list,
+        View view = inflater.inflate(R.layout.fragment_hero_list,
                 container,
                 false);
 
 
         mHeroRecyclerView = (RecyclerView) view
-                .findViewById(R.id.crime_recycler_view);
+                .findViewById(R.id.hero_recycler_view);
 
         mHeroRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mEditText = (EditText) view.findViewById(R.id.crime_edit_text);
+        mEditText = (EditText) view.findViewById(R.id.hero_edit_text);
 
         if(savedInstanceState!=null){
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
@@ -76,7 +76,7 @@ public class HeroListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_crime_list, menu);
+        inflater.inflate(R.menu.fragment_hero_list, menu);
 
         MenuItem subtitleItem = menu.findItem(R.id.show_subtitle);
         if (mSubtitleVisible) {
@@ -89,10 +89,10 @@ public class HeroListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.new_crime:
-                Hero crime = new Hero();
-                HeroLab.get(getActivity()).addHero(crime);
-                Intent intent = HeroPagerActivity.newIntent(getActivity(), crime.getId());
+            case R.id.new_hero:
+                Hero hero = new Hero();
+                HeroLab.get(getActivity()).addHero(hero);
+                Intent intent = HeroPagerActivity.newIntent(getActivity(), hero.getId());
                 startActivity(intent);
                 return true;
             case R.id.show_subtitle:
@@ -106,10 +106,10 @@ public class HeroListFragment extends Fragment {
     }
 
     private void updateSubtitle() {
-        HeroLab crimeLab = HeroLab.get(getActivity());
-        int crimeCount = crimeLab.getHeros().size();
+        HeroLab heroLab = HeroLab.get(getActivity());
+        int heroCount = heroLab.getHeros().size();
         @SuppressLint("StringFormatMatches")
-        String subtitle = getString(R.string.subtitle_format, crimeCount);
+        String subtitle = getString(R.string.subtitle_format, heroCount);
 
         if(!mSubtitleVisible){
             subtitle = null;
@@ -120,11 +120,11 @@ public class HeroListFragment extends Fragment {
     }
 
     private void updateUI() {
-        HeroLab crimeLab = HeroLab.get(getActivity());
-        List<Hero> crimes = crimeLab.getHeros();
+        HeroLab heroLab = HeroLab.get(getActivity());
+        List<Hero> heros = heroLab.getHeros();
 
         if (mAdapter == null) {
-            mAdapter = new HeroAdapter(crimes);
+            mAdapter = new HeroAdapter(heros);
             mHeroRecyclerView.setAdapter(mAdapter);
             mEditText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -143,7 +143,7 @@ public class HeroListFragment extends Fragment {
                 }
             });
         } else {
-            mAdapter.setHeros(crimes);
+            mAdapter.setHeros(heros);
 
             mAdapter.notifyDataSetChanged();
 
@@ -183,22 +183,22 @@ public class HeroListFragment extends Fragment {
         public HeroHolder(LayoutInflater inflater, ViewGroup parent) {
 
             //inflater.inflate() returns a view instance
-            super(inflater.inflate(R.layout.list_item_crime,
+            super(inflater.inflate(R.layout.list_item_hero,
                     parent,
                     false));
             itemView.setOnClickListener(this);
 
-            mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
-            mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
-            mImageView = (ImageView) itemView.findViewById(R.id.crime_solved);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.hero_title);
+            mDateTextView = (TextView) itemView.findViewById(R.id.hero_date);
+            mImageView = (ImageView) itemView.findViewById(R.id.hero_solved);
         }
 
-        public void bind(Hero crime) {
-            mHero = crime;
+        public void bind(Hero hero) {
+            mHero = hero;
             DateFormat dateFormat = DateFormat.getDateInstance();
             //Log.i(LOG_TAG, "Hero " + mHero.getId().toString() + " Bound.");
             mTitleTextView.setText(mHero.getTitle());
-            mDateTextView.setText(dateFormat.format(crime.getDate()));
+            mDateTextView.setText(dateFormat.format(hero.getDate()));
             mImageView.setVisibility(mHero.isSolved() ? View.VISIBLE : View.GONE);
         }
 
@@ -216,9 +216,9 @@ public class HeroListFragment extends Fragment {
         private List<Hero> mHeros;
         private List<Hero> mFilteredHeros;
 
-        public HeroAdapter(List<Hero> crimes) {
-            mHeros = crimes;
-            mFilteredHeros = crimes;
+        public HeroAdapter(List<Hero> heros) {
+            mHeros = heros;
+            mFilteredHeros = heros;
         }
 
 
@@ -232,8 +232,8 @@ public class HeroListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(HeroHolder holder, int position) {
-            Hero crime = mFilteredHeros.get(position);
-            holder.bind(crime);
+            Hero hero = mFilteredHeros.get(position);
+            holder.bind(hero);
         }
 
         @Override
@@ -243,8 +243,8 @@ public class HeroListFragment extends Fragment {
 
         //Set the mHeros received from database query (null, null)
         //it's a snapshot of the whole database
-        public void setHeros(List<Hero> crimes){
-            mFilteredHeros = crimes;
+        public void setHeros(List<Hero> heros){
+            mFilteredHeros = heros;
         }
 
         @Override

@@ -38,7 +38,7 @@ import java.util.UUID;
 
 public class HeroFragment extends Fragment {
 
-    private static final String ARG_CRIME_ID = "crime_id";
+    private static final String ARG_CRIME_ID = "hero_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final String DIALOG_PHOTO = "DialogPhoto";
 
@@ -58,9 +58,9 @@ public class HeroFragment extends Fragment {
     private ImageView mPhotoView;
     private ContentResolver mResolver;
 
-    public static HeroFragment newInstance(UUID crimeId) {
+    public static HeroFragment newInstance(UUID heroId) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CRIME_ID, crimeId);
+        args.putSerializable(ARG_CRIME_ID, heroId);
 
         HeroFragment fragment = new HeroFragment();
         fragment.setArguments(args);
@@ -73,8 +73,8 @@ public class HeroFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 //        mHero = new Hero();
-        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
-        mHero = HeroLab.get(getActivity()).getHero(crimeId);
+        UUID heroId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+        mHero = HeroLab.get(getActivity()).getHero(heroId);
         mPhotoFile = HeroLab.get(getActivity()).getPhotoFile(mHero);
     }
 
@@ -91,9 +91,9 @@ public class HeroFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_crime, container, false);
+        View v = inflater.inflate(R.layout.fragment_hero, container, false);
 
-        mDateButton = (Button) v.findViewById(R.id.crime_date);
+        mDateButton = (Button) v.findViewById(R.id.hero_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +105,7 @@ public class HeroFragment extends Fragment {
             }
         });
 
-        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.hero_solved);
         mSolvedCheckBox.setChecked(mHero.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -114,7 +114,7 @@ public class HeroFragment extends Fragment {
             }
         });
 
-        mTitleField = (EditText) v.findViewById(R.id.crime_title);
+        mTitleField = (EditText) v.findViewById(R.id.hero_title);
         mTitleField.setText(mHero.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -133,7 +133,7 @@ public class HeroFragment extends Fragment {
             }
         });
 
-        mReportButton = (Button) v.findViewById(R.id.crime_report);
+        mReportButton = (Button) v.findViewById(R.id.hero_report);
         mReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +141,7 @@ public class HeroFragment extends Fragment {
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_TEXT, getHeroReport());
                 i.putExtra(Intent.EXTRA_SUBJECT,
-                        getString(R.string.crime_report_subject));
+                        getString(R.string.hero_report_subject));
                 //Always choose an activity to launch.
                 i = Intent.createChooser(i, getString(R.string.send_report));
                 startActivity(i);
@@ -150,7 +150,7 @@ public class HeroFragment extends Fragment {
 
         final Intent pickContact = new Intent(Intent.ACTION_PICK,
                 ContactsContract.Contacts.CONTENT_URI);
-        mSuspectButton = (Button) v.findViewById(R.id.crime_suspect);
+        mSuspectButton = (Button) v.findViewById(R.id.hero_suspect);
         mSuspectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,7 +169,7 @@ public class HeroFragment extends Fragment {
             mSuspectButton.setEnabled(false);
         }
 
-        mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
+        mPhotoButton = (ImageButton) v.findViewById(R.id.hero_camera);
         //final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //final Intent selectImageFromGallery = new Intent(Intent.ACTION_PICK);
         final Intent captureImage = new Intent(Intent.ACTION_PICK);
@@ -201,7 +201,7 @@ public class HeroFragment extends Fragment {
             }
         });
 
-        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        mPhotoView = (ImageView) v.findViewById(R.id.hero_photo);
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -283,16 +283,16 @@ public class HeroFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_crime, menu);
+        inflater.inflate(R.menu.fragment_hero, menu);
 
-//        MenuItem menuItem = menu.findItem(R.id.delete_crime);
+//        MenuItem menuItem = menu.findItem(R.id.delete_hero);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.delete_crime:
+            case R.id.delete_hero:
                 HeroLab.get(getContext()).deleteHero(mHero);
                 getActivity().finish();
             default:
@@ -308,9 +308,9 @@ public class HeroFragment extends Fragment {
     private String getHeroReport() {
         String solvedString = null;
         if (mHero.isSolved()) {
-            solvedString = getString(R.string.crime_report_solved);
+            solvedString = getString(R.string.hero_report_solved);
         } else {
-            solvedString = getString(R.string.crime_report_unsolved);
+            solvedString = getString(R.string.hero_report_unsolved);
         }
 
         String dateFormat = "EEE, MMM dd";
@@ -318,12 +318,12 @@ public class HeroFragment extends Fragment {
 
         String suspect = mHero.getSuspect();
         if (suspect == null) {
-            suspect = getString(R.string.crime_report_no_suspect);
+            suspect = getString(R.string.hero_report_no_suspect);
         } else {
-            suspect = getString(R.string.crime_report_suspect, suspect);
+            suspect = getString(R.string.hero_report_suspect, suspect);
         }
 
-        String report = getString(R.string.crime_report,
+        String report = getString(R.string.hero_report,
                 mHero.getTitle(), dateString, solvedString, suspect);
 
         return report;

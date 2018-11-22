@@ -3,7 +3,7 @@ package database.HeroDbSchema;
 public class HeroDbSchema {
 
     public static final class HeroTable {
-        public static final String NAME = "crimes";
+        public static final String NAME = "heros";
 
         public static final class Cols {
             public static final String UUID = "uuid";

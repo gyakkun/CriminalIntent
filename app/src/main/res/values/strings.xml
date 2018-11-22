@@ -1,26 +1,26 @@
 <resources>
     <string name="app_name">Arena Of Valor</string>
 
-    <string name="crime_title_hint">Enter a title for the crime.</string>
-    <string name="crime_title_label">Title</string>
-    <string name="crime_details_label">Details</string>
-    <string name="crime_solved_label">Solved</string>
-    <string name="date_picker_title">Date of crime:</string>
-    <string name="new_crime">New Hero</string>
+    <string name="hero_title_hint">Enter a title for the hero.</string>
+    <string name="hero_title_label">Title</string>
+    <string name="hero_details_label">Details</string>
+    <string name="hero_solved_label">Solved</string>
+    <string name="date_picker_title">Date of hero:</string>
+    <string name="new_hero">New Hero</string>
     <string name="show_subtitle">Show Subtitle</string>
     <string name="hide_subtitle">Hide Subtitle</string>
-    <string name="subtitle_format">%1$d crimes</string>
-    <string name="delete_crime">Delete Hero</string>
-    <string name="crime_suspect_text">Choose Suspect</string>
-    <string name="crime_report_text">Send Hero Report</string>
-    <string name="crime_report">%1$s!
-        The crime was discovered on %2$s. %3$s, and %4$s
+    <string name="subtitle_format">%1$d heros</string>
+    <string name="delete_hero">Delete Hero</string>
+    <string name="hero_suspect_text">Choose Suspect</string>
+    <string name="hero_report_text">Send Hero Report</string>
+    <string name="hero_report">%1$s!
+        The hero was discovered on %2$s. %3$s, and %4$s
     </string>
-    <string name="crime_report_solved">The case is solved</string>
-    <string name="crime_report_unsolved">The case is not solved</string>
-    <string name="crime_report_no_suspect">there is no suspect.</string>
-    <string name="crime_report_suspect">the suspect is %s.</string>
-    <string name="crime_report_subject">CriminalIntent Hero Report</string>
-    <string name="send_report">Send crime report via</string>
+    <string name="hero_report_solved">The case is solved</string>
+    <string name="hero_report_unsolved">The case is not solved</string>
+    <string name="hero_report_no_suspect">there is no suspect.</string>
+    <string name="hero_report_suspect">the suspect is %s.</string>
+    <string name="hero_report_subject">CriminalIntent Hero Report</string>
+    <string name="send_report">Send hero report via</string>
 
 </resources>

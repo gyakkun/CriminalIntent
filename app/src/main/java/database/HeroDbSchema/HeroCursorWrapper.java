@@ -21,12 +21,12 @@ public class HeroCursorWrapper extends CursorWrapper {
         int isSolved = getInt(getColumnIndex(HeroTable.Cols.SOLVED));
         String suspect = getString(getColumnIndex(HeroTable.Cols.SUSPECT));
 
-        Hero crime = new Hero(UUID.fromString(uuidString));
-        crime.setTitle(title);
-        crime.setDate(new Date(date));
-        crime.setSolved(isSolved != 0);
-        crime.setSuspect(suspect);
+        Hero hero = new Hero(UUID.fromString(uuidString));
+        hero.setTitle(title);
+        hero.setDate(new Date(date));
+        hero.setSolved(isSolved != 0);
+        hero.setSuspect(suspect);
 
-        return crime;
+        return hero;
     }
 }
