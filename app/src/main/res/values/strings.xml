@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Arena Of Valor</string>
 
-    <string name="hero_title_hint">Enter a title for the hero.</string>
-    <string name="hero_title_label">Title</string>
+    <string name="hero_title_hint">Enter a name for the hero.</string>
+    <string name="hero_title_label">Name</string>
     <string name="hero_details_label">Details</string>
-    <string name="hero_solved_label">Starred</string>
+    <string name="hero_starred_label">Starred</string>
     <string name="date_picker_title">Date of hero:</string>
     <string name="new_hero">New Hero</string>
     <string name="show_subtitle">Show Subtitle</string>
@@ -12,9 +12,9 @@
     <string name="subtitle_format">%1$d heros</string>
     <string name="delete_hero">Delete Hero</string>
     <string name="hero_suspect_text">Choose Suspect</string>
-    <string name="hero_report_text">Send Hero Report</string>
+    <string name="hero_report_text">Share this hero</string>
     <string name="hero_report">%1$s!
-        The hero was discovered on %2$s. %3$s, and %4$s
+        The hero was discovered on %2$s. %3$s
     </string>
     <string name="hero_report_solved">The case is solved</string>
     <string name="hero_report_unsolved">The case is not solved</string>
@@ -28,5 +28,11 @@
     <string name="hero_argv1_label">Argv1</string>
     <string name="hero_argv2_label">Argv2</string>
     <string name="hero_argv3_label">Argv3</string>
+    <string name="hero_liveness_label">Liveness</string>
+    <string name="hero_liveness_value_dummy">100</string>
+    <string name="hero_attack_label">Attack</string>
+    <string name="hero_attack_value_dummy">50</string>
+    <string name="hero_affection_label">Affection</string>
+    <string name="hero_affection_value_dummy">30</string>
 
 </resources>

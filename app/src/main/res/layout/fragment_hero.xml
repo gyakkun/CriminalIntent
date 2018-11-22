@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -52,21 +52,16 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hero_title_hint" />
 
+            <CheckBox
+                android:id="@+id/hero_starred"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hero_starred_label" />
+
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        style="?android:listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hero_details_label" />
-
-    <Button
-        android:id="@+id/hero_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <TextView
         style="?android:listSeparatorTextViewStyle"
@@ -92,30 +87,84 @@
         android:layout_height="wrap_content"
         android:hint="@string/hero_argv2_hint" />
 
-    <TextView
-        style="?android:listSeparatorTextViewStyle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hero_argv3_label" />
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/hero_argv3"
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hero_liveness_label" />
+
+        <TextView
+            android:id="@+id/hero_liveness_value"
+            android:layout_marginLeft="240dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hero_liveness_value_dummy"/>
+
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/hero_liveness"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/hero_argv3_hint" />
+        android:orientation="horizontal">
 
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hero_attack_label" />
 
-    <CheckBox
-        android:id="@+id/hero_starred"
+        <TextView
+            android:id="@+id/hero_attack_value"
+            android:layout_marginLeft="240dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hero_attack_value_dummy"/>
+
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/hero_attack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hero_solved_label" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/hero_suspect"
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hero_affection_label" />
+
+        <TextView
+            android:id="@+id/hero_affection_value"
+            android:layout_marginLeft="240dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hero_affection_value_dummy"/>
+
+    </LinearLayout>
+
+
+
+    <SeekBar
+        android:id="@+id/hero_affection"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hero_suspect_text" />
+        android:layout_height="wrap_content" />
+
+
 
     <Button
         android:id="@+id/hero_report"

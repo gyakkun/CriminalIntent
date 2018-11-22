@@ -24,7 +24,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Hero Title"
+        android:text="Hero Name"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/hero_starred"
@@ -38,7 +38,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Hero Date"
+        android:text="Hero Nickname"
         app:layout_constraintEnd_toStartOf="@+id/hero_starred"
         app:layout_constraintStart_toEndOf="@+id/hero_avatar"
         app:layout_constraintTop_toBottomOf="@+id/hero_title" />

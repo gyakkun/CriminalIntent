@@ -1,7 +1,6 @@
 package moe.nyamori.arenaofvalor;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -28,6 +27,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,14 +49,18 @@ public class HeroFragment extends Fragment {
 
     private Hero mHero;
     private File mPhotoFile;
-    private EditText mTitleField;
-    private Button mDateButton;
-    private CheckBox mSolvedCheckBox;
+    private EditText mNameField;
+    private EditText mNicknameField;
+    private EditText mPositionField;
+    private CheckBox mStarCheckbox;
     private Button mReportButton;
-    private Button mSuspectButton;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
-    private ContentResolver mResolver;
+
+    private SeekBar mLivenessSeekbar;
+    private SeekBar mAttackSeekbar;
+    private SeekBar mAffectionSeekbar;
+    private SeekBar mHardnessSeekbar;
 
     public static HeroFragment newInstance(UUID heroId) {
         Bundle args = new Bundle();
@@ -93,30 +97,18 @@ public class HeroFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_hero, container, false);
 
-        mDateButton = (Button) v.findViewById(R.id.hero_profile);
-        updateDate();
-        mDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = getFragmentManager();
-                DatePickerFragment dialog = DatePickerFragment.newInstance(mHero.getDate());
-                dialog.setTargetFragment(HeroFragment.this, REQUEST_DATE);
-                dialog.show(fragmentManager, DIALOG_DATE);
-            }
-        });
-
-        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.hero_starred);
-        mSolvedCheckBox.setChecked(mHero.isStarred());
-        mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mStarCheckbox = (CheckBox) v.findViewById(R.id.hero_starred);
+        mStarCheckbox.setChecked(mHero.isStarred());
+        mStarCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 mHero.setStarred(isChecked);
             }
         });
 
-        mTitleField = (EditText) v.findViewById(R.id.hero_title);
-        mTitleField.setText(mHero.getTitle());
-        mTitleField.addTextChangedListener(new TextWatcher() {
+        mNameField = (EditText) v.findViewById(R.id.hero_title);
+        mNameField.setText(mHero.getName());
+        mNameField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -124,7 +116,7 @@ public class HeroFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int after) {
-                mHero.setTitle(s.toString());
+                mHero.setName(s.toString());
             }
 
             @Override
@@ -150,24 +142,9 @@ public class HeroFragment extends Fragment {
 
         final Intent pickContact = new Intent(Intent.ACTION_PICK,
                 ContactsContract.Contacts.CONTENT_URI);
-        mSuspectButton = (Button) v.findViewById(R.id.hero_suspect);
-        mSuspectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(pickContact, REQUEST_CONTACT);
-            }
-        });
 
-        if (mHero.getSuspect() != null) {
-            mSuspectButton.setText(mHero.getSuspect());
-        }
 
         //Check if system has a responsible app to contact activity
-        final PackageManager packageManager = getActivity().getPackageManager();
-        if (packageManager.resolveActivity(pickContact,
-                packageManager.MATCH_DEFAULT_ONLY) == null) {
-            mSuspectButton.setEnabled(false);
-        }
 
         mPhotoButton = (ImageButton) v.findViewById(R.id.hero_camera);
         //final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -176,6 +153,7 @@ public class HeroFragment extends Fragment {
         captureImage.setType("image/*");
 
         //Check if system has a camera app or other photo provider
+        final PackageManager packageManager = getActivity().getPackageManager();
         boolean canTakePhoto = mPhotoFile != null &&
                 captureImage.resolveActivity(packageManager) != null;
         mPhotoButton.setEnabled(canTakePhoto);
@@ -224,12 +202,6 @@ public class HeroFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             return;
-        }
-
-        if (requestCode == REQUEST_DATE) {
-            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-            mHero.setDate(date);
-            updateDate();
         } else if (resultCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();
 
@@ -248,8 +220,6 @@ public class HeroFragment extends Fragment {
 
                 c.moveToFirst();
                 String suspect = c.getString(0);
-                mHero.setSuspect(suspect);
-                mSuspectButton.setText(suspect);
             } finally {
                 c.close();
             }
@@ -300,10 +270,6 @@ public class HeroFragment extends Fragment {
         }
     }
 
-    private void updateDate() {
-        java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
-        mDateButton.setText(dateFormat.format(mHero.getDate()));
-    }
 
     private String getHeroReport() {
         String solvedString = null;
@@ -313,18 +279,9 @@ public class HeroFragment extends Fragment {
             solvedString = getString(R.string.hero_report_unsolved);
         }
 
-        String dateFormat = "EEE, MMM dd";
-        String dateString = DateFormat.format(dateFormat, mHero.getDate()).toString();
-
-        String suspect = mHero.getSuspect();
-        if (suspect == null) {
-            suspect = getString(R.string.hero_report_no_suspect);
-        } else {
-            suspect = getString(R.string.hero_report_suspect, suspect);
-        }
 
         String report = getString(R.string.hero_report,
-                mHero.getTitle(), dateString, solvedString, suspect);
+                mHero.getName(), solvedString, "hero");
 
         return report;
 
